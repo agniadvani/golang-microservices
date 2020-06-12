@@ -39,6 +39,7 @@ func TestMakeElements(t *testing.T) {
 	assert.EqualValues(t, 0, els[4])
 
 }
+
 func BenchmarkBubbleSort100(b *testing.B) {
 
 	els := makeElements(100)
@@ -98,6 +99,19 @@ func BenchmarkNativeSort50000(b *testing.B) {
 		sort.Ints(els)
 	}
 }
+
+func TestSort(t *testing.T) {
+	a := makeElements(5)
+	Sort(a)
+	assert.NotNil(t, a)
+	assert.EqualValues(t, 5, len(a))
+	assert.EqualValues(t, 0, a[0])
+	assert.EqualValues(t, 1, a[1])
+	assert.EqualValues(t, 2, a[2])
+	assert.EqualValues(t, 3, a[3])
+	assert.EqualValues(t, 4, a[4])
+}
+
 func BenchmarkSort100(b *testing.B) {
 	els := makeElements(100)
 	for i := 0; i < b.N; i++ {
