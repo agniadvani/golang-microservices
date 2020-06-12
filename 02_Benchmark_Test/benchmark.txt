@@ -1,0 +1,16 @@
+Bubble Sort - 100 elements:
+
+BenchmarkBubbleSort100-4   	 6142198	       165 ns/op	 	     
+BenchmarkBubbleSort100-4   	 6608782	       169 ns/op	 
+
+
+Bubble Sort - 1000 elements:
+
+BenchmarkBubbleSort1000-4   	  711194	      1563 ns/op	
+BenchmarkBubbleSort1000-4   	  721414	      1510 ns/op	
+
+
+Bubble Sort - 100000 elements:
+
+BenchmarkBubbleSort100000-4   	       1	16599599778 ns/op	
+BenchmarkBubbleSort100000-4   	       1	18844896655 ns/op
