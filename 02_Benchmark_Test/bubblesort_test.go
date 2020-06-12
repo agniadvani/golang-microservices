@@ -1,6 +1,7 @@
 package benchmark
 
 import (
+	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -59,5 +60,53 @@ func BenchmarkBubbleSort100000(b *testing.B) {
 	els := makeElements(100000)
 	for i := 0; i < b.N; i++ {
 		BubbleSort(els)
+	}
+}
+
+func BenchmarkNativeSort100(b *testing.B) {
+	els := makeElements(100)
+	for i := 0; i < b.N; i++ {
+		sort.Ints(els)
+	}
+}
+
+func BenchmarkNativeSort1000(b *testing.B) {
+	els := makeElements(1000)
+	for i := 0; i < b.N; i++ {
+		sort.Ints(els)
+	}
+}
+
+func BenchmarkNativeSort100000(b *testing.B) {
+	els := makeElements(100000)
+	for i := 0; i < b.N; i++ {
+		sort.Ints(els)
+	}
+}
+
+func BenchmarkBubbleSort50000(b *testing.B) {
+
+	els := makeElements(50000)
+	for i := 0; i < b.N; i++ {
+		BubbleSort(els)
+	}
+}
+
+func BenchmarkNativeSort50000(b *testing.B) {
+	els := makeElements(50000)
+	for i := 0; i < b.N; i++ {
+		sort.Ints(els)
+	}
+}
+func BenchmarkSort100(b *testing.B) {
+	els := makeElements(100)
+	for i := 0; i < b.N; i++ {
+		Sort(els)
+	}
+}
+func BenchmarkSort100000(b *testing.B) {
+	els := makeElements(100000)
+	for i := 0; i < b.N; i++ {
+		Sort(els)
 	}
 }

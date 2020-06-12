@@ -1,16 +1,59 @@
-Bubble Sort - 100 elements:
+Bubble Sort :-
 
-BenchmarkBubbleSort100-4   	 6142198	       165 ns/op	 	     
-BenchmarkBubbleSort100-4   	 6608782	       169 ns/op	 
+  Bubble Sort - 100 elements:
 
-
-Bubble Sort - 1000 elements:
-
-BenchmarkBubbleSort1000-4   	  711194	      1563 ns/op	
-BenchmarkBubbleSort1000-4   	  721414	      1510 ns/op	
+     BenchmarkBubbleSort100-4   	 6142198	       165 ns/op	 	     
+     BenchmarkBubbleSort100-4   	 6608782	       169 ns/op	 
 
 
-Bubble Sort - 100000 elements:
+  Bubble Sort - 1000 elements:
 
-BenchmarkBubbleSort100000-4   	       1	16599599778 ns/op	
-BenchmarkBubbleSort100000-4   	       1	18844896655 ns/op
+     BenchmarkBubbleSort1000-4   	  711194	      1563 ns/op	
+     BenchmarkBubbleSort1000-4   	  721414	      1510 ns/op	
+
+  Bubble Sort - 50000 elements:
+     BenchmarkBubbleSort50000-4   	       1	3041878858 ns/op
+     BenchmarkBubbleSort50000-4   	       1	3015700495 ns/op	
+
+
+  Bubble Sort - 100000 elements:
+
+     BenchmarkBubbleSort100000-4   	       1	16599599778 ns/op	
+     BenchmarkBubbleSort100000-4   	       1	18844896655 ns/op
+
+
+Native Sort :-
+
+  Native Sort - 100 elements:
+
+     BenchmarkNativeSort100-4   	  367480	      3088 ns/op	
+     BenchmarkNativeSort100-4   	  362318	      3088 ns/op
+
+  Native Sort - 1000 elements:
+
+     BenchmarkNativeSort1000-4   	   21343	     54835 ns/op
+     BenchmarkNativeSort1000-4   	   21813	     54349 ns/op
+  
+  Native Sort - 50000 elements:
+    
+    BenchmarkNativeSort50000-4   	     266	   4229490 ns/op
+    BenchmarkNativeSort50000-4   	     272	   4115440 ns/op
+
+
+  Native Sort - 100000 elements:
+
+     BenchmarkNativeSort100000-4   	     127	   9257702 ns/op
+     BenchmarkNativeSort100000-4   	     135	   8785486 ns/op
+
+
+Sort :- 
+
+  Sort - 100 elements:
+     BenchmarkSort100-4   	11993936	        96.7 ns/op	  
+     BenchmarkSort100-4   	11966311	        93.0 ns/op	
+    
+  Sort - 100000 elements:
+     
+     BenchmarkSort100000-4   	     133	   8749367 ns/op
+     BenchmarkSort100000-4   	     128	   8985957 ns/op
+      
