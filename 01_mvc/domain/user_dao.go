@@ -3,7 +3,7 @@ package domain
 import (
 	"net/http"
 
-	"github.com/advaniagni/golang-microservices/01_mvc/utilis"
+	"github.com/agniadvani/golang-microservices/01_mvc/utilis"
 )
 
 var users = map[int64]*User{

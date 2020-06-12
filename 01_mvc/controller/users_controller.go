@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/advaniagni/golang-microservices/01_mvc/utilis"
+	"github.com/agniadvani/golang-microservices/01_mvc/utilis"
 
-	"github.com/advaniagni/golang-microservices/01_mvc/services"
+	"github.com/agniadvani/golang-microservices/01_mvc/services"
 )
 
 func GetUser(w http.ResponseWriter, r *http.Request) {

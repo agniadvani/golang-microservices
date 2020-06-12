@@ -3,7 +3,7 @@ package app
 import (
 	"net/http"
 
-	"github.com/advaniagni/golang-microservices/01_mvc/controller"
+	"github.com/agniadvani/golang-microservices/01_mvc/controller"
 )
 
 func StartApp() {
