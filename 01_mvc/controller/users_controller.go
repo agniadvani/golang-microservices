@@ -5,20 +5,29 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/advaniagni/golang-microservices/01_mvc/utilis"
+
 	"github.com/advaniagni/golang-microservices/01_mvc/services"
 )
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.ParseInt(r.URL.Query().Get("user_id"), 10, 64)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("user_id must be a number"))
+		ApiErr := &utilis.ApplicationError{
+			Message: "UserID has to be a number.",
+			Status:  http.StatusBadRequest,
+			Code:    "bad_request",
+		}
+		jsonvalue, _ := json.Marshal(ApiErr)
+		w.WriteHeader(ApiErr.Status)
+		w.Write(jsonvalue)
 		return
 	}
-	user, err := services.GetUser(userID)
-	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte("user_id not found"))
+	user, ApiErr := services.GetUser(userID)
+	if ApiErr != nil {
+		jsonvalue, _ := json.Marshal(ApiErr)
+		w.WriteHeader(ApiErr.Status)
+		w.Write(jsonvalue)
 		return
 	}
 	jsonvalue, _ := json.Marshal(user)
