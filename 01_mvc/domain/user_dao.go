@@ -6,11 +6,14 @@ import (
 	"github.com/agniadvani/golang-microservices/01_mvc/utilis"
 )
 
+type userdao struct{}
+
+var UserDao userdao
 var users = map[int64]*User{
 	123: &User{UserID: 123, FirstName: "Wayne", LastName: "Rooney", Email: "waynerooney@ggmu.com"},
 }
 
-func GetUser(userID int64) (*User, *utilis.ApplicationError) {
+func (u *userdao) GetUser(userID int64) (*User, *utilis.ApplicationError) {
 	if user := users[userID]; user != nil {
 		return user, nil
 	}
