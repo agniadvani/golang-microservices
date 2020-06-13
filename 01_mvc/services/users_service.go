@@ -10,5 +10,9 @@ type userservice struct{}
 var Userservice userservice
 
 func (u *userservice) GetUser(userId int64) (*domain.User, *utilis.ApplicationError) {
-	return domain.UserDao.GetUser(userId)
+	user, err := domain.UserDao.GetUser(userId)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }

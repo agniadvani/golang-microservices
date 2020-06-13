@@ -1,19 +1,30 @@
 package domain
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/agniadvani/golang-microservices/01_mvc/utilis"
 )
 
-type userdao struct{}
-
-var UserDao userdao
 var users = map[int64]*User{
 	123: &User{UserID: 123, FirstName: "Wayne", LastName: "Rooney", Email: "waynerooney@ggmu.com"},
 }
 
-func (u *userdao) GetUser(userID int64) (*User, *utilis.ApplicationError) {
+type userDao struct{}
+
+type userDaoInterface interface {
+	GetUser(int64) (*User, *utilis.ApplicationError)
+}
+
+var UserDao userDaoInterface
+
+func init() {
+	UserDao = &userDao{}
+}
+
+func (u *userDao) GetUser(userID int64) (*User, *utilis.ApplicationError) {
+	log.Println("Were accessing the database")
 	if user := users[userID]; user != nil {
 		return user, nil
 	}
