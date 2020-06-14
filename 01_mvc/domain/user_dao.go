@@ -13,11 +13,11 @@ var users = map[int64]*User{
 
 type userDao struct{}
 
+var UserDao userDaoInterface
+
 type userDaoInterface interface {
 	GetUser(int64) (*User, *utilis.ApplicationError)
 }
-
-var UserDao userDaoInterface
 
 func init() {
 	UserDao = &userDao{}
