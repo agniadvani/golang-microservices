@@ -1,6 +1,6 @@
 package github
 
-type CreteRepoRequest struct {
+type CreateRepoRequest struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Homepage    string `json:"homepage"`

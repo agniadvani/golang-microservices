@@ -8,8 +8,7 @@ import (
 	"net/http"
 
 	"github.com/agniadvani/golang-microservices/src/api/clients/restclient"
-
-	"github.com/federicoleon/golang-microservices/src/api/domain/github"
+	"github.com/agniadvani/golang-microservices/src/api/domain/github"
 )
 
 const (
@@ -26,6 +25,8 @@ func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.C
 	headers := http.Header{}
 	headers.Set(headerAuthorization, getAuthorizationHeader(accessToken))
 	response, err := restclient.Post(urlCreateRepo, request, headers)
+	fmt.Println(response)
+	fmt.Println(err)
 	if err != nil {
 		log.Printf("error when trying to create a new repository in github: %s", err.Error())
 		return nil, &github.GithubErrorResponse{StatusCode: http.StatusInternalServerError, Message: err.Error()}
