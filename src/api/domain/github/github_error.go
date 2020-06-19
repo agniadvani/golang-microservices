@@ -1,10 +1,14 @@
 package github
 
 type GithubErrorResponse struct {
-	StatusCode       int    `json:"status_code"`
-	Message          string `json:"message"`
-	DocumentationURL string `json:"documentation_url"`
-	Errors           []GithubError
+	StatusCode      int           `json:"status_code"`
+	Message         string        `json:"message"`
+	DocumentationUr string        `json:"documentation_url"`
+	Errors          []GithubError `json:"errors"`
+}
+
+func (r GithubErrorResponse) Error() string {
+	return r.Message
 }
 
 type GithubError struct {
