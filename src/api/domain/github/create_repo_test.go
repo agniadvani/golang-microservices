@@ -8,7 +8,7 @@ import (
 )
 
 func TestCreateRepoAsJson(t *testing.T) {
-	request := CreteRepoRequest{
+	request := CreateRepoRequest{
 		Name:        "Postman-Repo",
 		Description: "This is your first Api repository",
 		Homepage:    "https://github.com",
@@ -21,7 +21,7 @@ func TestCreateRepoAsJson(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, bytes)
 
-	var target CreteRepoRequest
+	var target CreateRepoRequest
 
 	err = json.Unmarshal(bytes, &target)
 
