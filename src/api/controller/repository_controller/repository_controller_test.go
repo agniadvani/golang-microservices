@@ -15,7 +15,7 @@ import (
 
 	"github.com/agniadvani/golang-microservices/src/api/clients/restclient"
 	"github.com/agniadvani/golang-microservices/src/api/utilis/errors"
-	"github.com/gin-gonic/gin"
+	"github.com/agniadvani/golang-microservices/src/api/utilis/test_utilis"
 )
 
 func TestMain(m *testing.M) {
@@ -24,9 +24,8 @@ func TestMain(m *testing.M) {
 }
 func TestCreateRepoJsonErr(t *testing.T) {
 	response := httptest.NewRecorder()
-	c, _ := gin.CreateTestContext(response)
 	request, _ := http.NewRequest(http.MethodPost, "/repositories", strings.NewReader(``))
-	c.Request = request
+	c := test_utilis.GetMockedContext(request, response)
 	CreateRepo(c)
 	assert.EqualValues(t, http.StatusBadRequest, response.Code)
 	apiErr, err := errors.NewApiErrFromBytes(response.Body.Bytes())
@@ -38,11 +37,10 @@ func TestCreateRepoJsonErr(t *testing.T) {
 
 func TestCreateRepoAuthorizationErr(t *testing.T) {
 	response := httptest.NewRecorder()
-	c, _ := gin.CreateTestContext(response)
 	request, _ := http.NewRequest(http.MethodPost, "/repositories", strings.NewReader(`{"name":"testing"}`))
-	c.Request = (request)
-	restclient.FlushMockUp()
+	c := test_utilis.GetMockedContext(request, response)
 
+	restclient.FlushMockUp()
 	restclient.AddMock(restclient.Mock{
 		URL:        "https://api.github.com/user/repos",
 		HttpMethod: http.MethodPost,
@@ -62,10 +60,10 @@ func TestCreateRepoAuthorizationErr(t *testing.T) {
 }
 
 func TestCreateRepoNoError(t *testing.T) {
+
 	response := httptest.NewRecorder()
-	c, _ := gin.CreateTestContext(response)
 	request, _ := http.NewRequest(http.MethodPost, "/repositories", strings.NewReader(`{"name":"testing"}`))
-	c.Request = (request)
+	c := test_utilis.GetMockedContext(request, response)
 
 	restclient.FlushMockUp()
 
