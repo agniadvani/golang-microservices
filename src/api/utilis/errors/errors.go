@@ -1,6 +1,8 @@
 package errors
 
 import (
+	"encoding/json"
+	"errors"
 	"net/http"
 )
 
@@ -26,6 +28,13 @@ func (s *apiErr) Message() string {
 
 func (s *apiErr) Error() string {
 	return s.Aerror
+}
+func NewApiErrFromBytes(body []byte) (ApiError, error) {
+	var result apiErr
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, errors.New("invalid json body")
+	}
+	return &result, nil
 }
 func NewApiErr(statusCode int, message string) ApiError {
 	return &apiErr{
