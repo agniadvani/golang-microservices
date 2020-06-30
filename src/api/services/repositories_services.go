@@ -1,8 +1,6 @@
 package services
 
 import (
-	"strings"
-
 	"github.com/agniadvani/golang-microservices/src/api/config"
 	"github.com/agniadvani/golang-microservices/src/api/domain/github"
 	"github.com/agniadvani/golang-microservices/src/api/providers/github_provider"
@@ -15,6 +13,7 @@ type repoService struct{}
 
 type repoServiceInterface interface {
 	CreateRepo(input repositories.CreateRepoRequest) (*repositories.CreateRepoResponse, errors.ApiError)
+	CreateRepos(request []repositories.CreateRepoRequest) (repositories.CreateReposResponse, errors.ApiError)
 }
 
 var (
@@ -26,11 +25,9 @@ func init() {
 }
 
 func (r *repoService) CreateRepo(input repositories.CreateRepoRequest) (*repositories.CreateRepoResponse, errors.ApiError) {
-	input.Name = strings.TrimSpace(input.Name)
-	if input.Name == "" {
-		return nil, errors.NewBadRequestError("invalid repository name")
+	if err := input.Validate(); err != nil {
+		return nil, err
 	}
-
 	request := github.CreateRepoRequest{
 		Name:        input.Name,
 		Description: input.Description,
@@ -46,4 +43,40 @@ func (r *repoService) CreateRepo(input repositories.CreateRepoRequest) (*reposit
 		Name:  response.Name,
 	}
 	return &result, nil
+}
+
+func (r *repoService) CreateRepos(request []repositories.CreateRepoRequest) (repositories.CreateReposResponse, errors.ApiError) {
+	input := make(chan repositories.CreateRepositoriesResult)
+	output := make(chan repositories.CreateReposResponse)
+	go r.handleRequest(input, output)
+	for _, currentRepo := range request {
+		go r.createRepos(currentRepo, input)
+	}
+	result := <-output
+	return result, nil
+}
+func (r *repoService) handleRequest(input chan repositories.CreateRepositoriesResult, output chan repositories.CreateReposResponse) {
+	var results repositories.CreateReposResponse
+	for incomingRepo := range input {
+		repoResult := repositories.CreateRepositoriesResult{
+			Response: incomingRepo.Response,
+			Error:    incomingRepo.Error,
+		}
+		results.Result = append(results.Result, repoResult)
+	}
+	output <- results
+}
+
+func (r *repoService) createRepos(input repositories.CreateRepoRequest, output chan repositories.CreateRepositoriesResult) {
+	if err := input.Validate(); err != nil {
+		output <- repositories.CreateRepositoriesResult{Error: err}
+		return
+	}
+	result, err := r.CreateRepo(input)
+	if err != nil {
+		output <- repositories.CreateRepositoriesResult{Error: err}
+		return
+	}
+
+	output <- repositories.CreateRepositoriesResult{Response: result}
 }
