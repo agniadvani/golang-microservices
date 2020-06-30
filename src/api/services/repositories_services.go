@@ -1,6 +1,9 @@
 package services
 
 import (
+	"net/http"
+	"sync"
+
 	"github.com/agniadvani/golang-microservices/src/api/config"
 	"github.com/agniadvani/golang-microservices/src/api/domain/github"
 	"github.com/agniadvani/golang-microservices/src/api/providers/github_provider"
@@ -48,14 +51,36 @@ func (r *repoService) CreateRepo(input repositories.CreateRepoRequest) (*reposit
 func (r *repoService) CreateRepos(request []repositories.CreateRepoRequest) (repositories.CreateReposResponse, errors.ApiError) {
 	input := make(chan repositories.CreateRepositoriesResult)
 	output := make(chan repositories.CreateReposResponse)
-	go r.handleRequest(input, output)
+	defer close(output)
+	var wg sync.WaitGroup
+	go r.handleRequest(&wg, input, output)
 	for _, currentRepo := range request {
+		wg.Add(1)
 		go r.createRepos(currentRepo, input)
 	}
+	wg.Wait()
+	close(input)
 	result := <-output
+
+	successCreations := 0
+	for _, current := range result.Result {
+		if current.Response != nil {
+			successCreations++
+		}
+
+	}
+
+	if successCreations == 0 {
+		result.StatusCode = result.Result[0].Error.Status()
+	} else if successCreations != len(request) {
+		result.StatusCode = http.StatusPartialContent
+	} else {
+		result.StatusCode = http.StatusCreated
+	}
+
 	return result, nil
 }
-func (r *repoService) handleRequest(input chan repositories.CreateRepositoriesResult, output chan repositories.CreateReposResponse) {
+func (r *repoService) handleRequest(wg *sync.WaitGroup, input chan repositories.CreateRepositoriesResult, output chan repositories.CreateReposResponse) {
 	var results repositories.CreateReposResponse
 	for incomingRepo := range input {
 		repoResult := repositories.CreateRepositoriesResult{
@@ -63,6 +88,7 @@ func (r *repoService) handleRequest(input chan repositories.CreateRepositoriesRe
 			Error:    incomingRepo.Error,
 		}
 		results.Result = append(results.Result, repoResult)
+		wg.Done()
 	}
 	output <- results
 }
