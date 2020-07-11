@@ -3,8 +3,8 @@ package services
 import (
 	"net/http"
 
+	"github.com/agniadvani/golang-microservices/01_mvc/domain"
 	"github.com/agniadvani/golang-microservices/01_mvc/utilis"
-	"github.com/federicoleon/golang-microservices/mvc/domain"
 )
 
 type itemservice struct{}
